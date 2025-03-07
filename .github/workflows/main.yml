@@ -1,0 +1,21 @@
+name: Auto Update Log
+
+on: [push]
+
+jobs:
+  update-log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Update log file
+        run: echo "- **$(date)** → Commit baru oleh ${{ github.actor }}" >> log.md
+
+      - name: Commit log update
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add log.md
+          git commit -m "Update log.md otomatis"
+          git push
